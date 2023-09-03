@@ -2,11 +2,13 @@
 #include <algorithm>
 using namespace std;
 
+// membuat structure untuk variabel kesatuan; Si, Ei, Pi
 struct job
 {
     int mulai, selesai, upah;
 };
 
+// fungsi banding 
 bool compare(job a, job b){
     if (a.selesai < b.selesai){
         return 1;
