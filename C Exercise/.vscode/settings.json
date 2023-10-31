@@ -58,6 +58,9 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "P0601.C": "cpp",
-    "NO2,.C": "cpp"
+    "NO2,.C": "cpp",
+    "array": "c",
+    "string_view": "c",
+    "initializer_list": "c"
   }
 }
