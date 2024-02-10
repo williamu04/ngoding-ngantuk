@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "d:/Media/Documents/GitHub/ngoding-ngantuk/C Exercise/KP-7",
+      "program": "d:/Media/Documents/GitHub/ngoding-ngantuk/C Exercise/KP-7/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

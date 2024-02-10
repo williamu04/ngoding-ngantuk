@@ -1,0 +1,2 @@
+A
+Ini adalah string.
