@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/GitHub/ngoding-ngantuk/C++ Exercise",
-      "program": "c:/GitHub/ngoding-ngantuk/C++ Exercise/build/Debug/outDebug",
+      "cwd": "c:/GitHub/ngoding-ngantuk/C++ Exercise/SDA",
+      "program": "c:/GitHub/ngoding-ngantuk/C++ Exercise/SDA/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
