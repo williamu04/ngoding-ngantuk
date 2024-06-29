@@ -40,7 +40,7 @@ int findIndex(int arr[], int size, int target, int currentIndex = 0) {
         return -1; // target not found
     }
     if (arr[currentIndex] == target) {
-        return currentIndex;
+        return currentIndex+1;
     }
     return findIndex(arr, size, target, currentIndex + 1);
 }
@@ -59,11 +59,17 @@ int pow(int a, int n){
     }
 }
 
+// int main(){
+//     int a, n;
+//     cout << "Masukkan basis: ";
+//     cin >> a;
+//     cout << "Masukkan pangkat: ";
+//     cin >> n;
+//     cout << "Hasilnya adalah: " << pow(a, n);
+// }
+
 int main(){
-    int a, n;
-    cout << "Masukkan basis: ";
-    cin >> a;
-    cout << "Masukkan pangkat: ";
-    cin >> n;
-    cout << "Hasilnya adalah: " << pow(a, n);
+    int arr[] = {2, 3, 1, 5, 7, 6, 0, 4, 9};
+
+    cout << findIndex(arr, 9, 5);
 }

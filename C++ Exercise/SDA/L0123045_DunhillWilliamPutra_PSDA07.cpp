@@ -1,144 +1,81 @@
 #include <iostream>
+#include <map>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
-enum nama {
-    Andi,
-    Budi,
-    Caca,
-    Dedi,
-    Endi,
-    Fifi,
-    Gaoa,
-    Jumlah
-};
+class SocialGraph {
+private:
+    map<string, vector<string>> adjList;
 
-enum teman {
-    berteman,
-    belum
-};
-
-teman pertemanan[Jumlah][Jumlah];
-
-
-// Daftar Fitur
-// Menambahkan mahasiswa baru beserta daftar teman-temannya.
-// Menambahkan hubungan pertemanan antara dua mahasiswa yang sudah terdaftar.
-// Menghapus mahasiswa beserta seluruh hubungan pertemanannya.
-// Mencari teman bersama antara dua mahasiswa yang sudah terdaftar.
-// Menampilkan daftar teman dari seorang mahasiswa tertentu.
-
-void menu();
-void tambah_mhs();
-void tambah_hubung();
-void hapus_mhs();
-void cari_teman();
-void show_teman();
-
-void setHubungan(nama a, nama b);
-
-int main(){
-    // menentukan aksi
-    pertemanan[Andi][Budi] = berteman;
-    pertemanan[Budi][Andi] = berteman;
-    pertemanan[Budi][Caca] = belum;
-    
-    int input;
-
-    while (1)
-    {
-        menu();
-        cout << "\nMasukkan input: ";
-        cin >> input;   
-        
-        switch (input)
-        {
-        case 1:
-            tambah_mhs();
-            break;
-        case 2: 
-            tambah_hubung();
-            break;
-        case 3: 
-            cari_teman();
-            break;
-        case 4:
-            show_teman();
-            break;
-        case 5:
-            hapus_mhs();
-            break;
-        case 6: 
-            return 0;
-            break;
-        default:
-            cout << "Input tidak valid" << endl;
-            break;
+public:
+    // Menambahkan mahasiswa baru beserta daftar teman-temannya
+    void addStudent(const string& name, const vector<string>& friends) {
+        adjList[name] = friends;
+        for (const auto& friendName : friends) {
+            adjList[friendName].push_back(name);
         }
     }
-}
 
-void menu(){
-    cout << "Menu" << endl;
-    cout << "1. Tambahkan Nama Mahasiswa Baru" << endl;
-    cout << "2. Hubungkan 2 Mahasiswa" << endl;
-    cout << "3. Cari teman bersama dari 2 Mahasiswa" << endl;
-    cout << "4. Tampilkan daftar teman dari seorang Mahasiswa" << endl;
-    cout << "5. Hapus Mahasiswa dan hubungan teman" << endl;
-    cout << "6. Keluar";
-}
+    // Menambahkan hubungan pertemanan antara dua mahasiswa yang sudah terdaftar
+    void addFriendship(const string& student1, const string& student2) {
+        adjList[student1].push_back(student2);
+        adjList[student2].push_back(student1);
+    }
 
-void tambah_mhs(){
-    cout << "Menambahkan Mahasiswa" << endl;
-}
-void tambah_hubung(){
-    cout << "Masukkan nama teman yang ingin dihubungkan: ";
-    string input;
-    cin >> input;
+    // Menghapus mahasiswa beserta seluruh hubungan pertemanannya
+    void removeStudent(const string& name) {
+        for (auto& friendName : adjList[name]) {
+            adjList[friendName].erase(remove(adjList[friendName].begin(), adjList[friendName].end(), name), adjList[friendName].end());
+        }
+        adjList.erase(name);
+    }
 
-    // Convert the input string to lowercase for case-insensitive comparison
-    // transform(input.begin(), input.end(), input.begin(), ::tolower);
+    // Mencari teman bersama antara dua mahasiswa yang sudah terdaftar
+    vector<string> findMutualFriends(const string& student1, const string& student2) {
+        vector<string> mutualFriends;
+        vector<string> friendsOfStudent1 = adjList[student1];
+        vector<string> friendsOfStudent2 = adjList[student2];
 
-    // Check if the input string matches one of the elements in the enum nama
-    for (int i = 0; i < Jumlah; i++) {
-        string namaStr = to_string(static_cast<enum nama>(i));
-        // transform(namaStr.begin(), namaStr.end(), namaStr.begin(), ::tolower);
+        sort(friendsOfStudent1.begin(), friendsOfStudent1.end());
+        sort(friendsOfStudent2.begin(), friendsOfStudent2.end());
 
-        if (input == namaStr) {
-            nama nama1 = static_cast<enum nama>(i);
-            cout << "Masukkan nama teman yang ingin dihubungkan: ";
-            cin >> input;
-            transform(input.begin(), input.end(), input.begin(), ::tolower);
+        set_intersection(friendsOfStudent1.begin(), friendsOfStudent1.end(), friendsOfStudent2.begin(), friendsOfStudent2.end(), back_inserter(mutualFriends));
 
-            for (int j = 0; j < Jumlah; j++) {
-                string namaStr2 = to_string(static_cast<enum nama>(j));
-                transform(namaStr2.begin(), namaStr2.end(), namaStr2.begin(), ::tolower);
+        return mutualFriends;
+    }
 
-                if (input == namaStr2) {
-                    nama nama2 = static_cast<enum nama>(j);
-                    setHubungan(nama1, nama2);
-                    cout << "Menghubungkan 2 Mahasiswa" << endl;
-                    return;
-                }
+    // Menampilkan daftar teman dari seorang mahasiswa tertentu
+    void displayFriends(const string& name) {
+        if (adjList.find(name) != adjList.end()) {
+            cout << "Daftar teman " << name << ": ";
+            for (const auto& friendName : adjList[name]) {
+                cout << friendName << " ";
             }
+            cout << endl;
+        } else {
+            cout << name << " tidak ditemukan dalam jaringan." << endl;
         }
     }
+};
 
-    cout << "Nama tidak ditemukan" << endl;
-}
-void hapus_mhs(){
-    cout << "Menghapus Mahasiswa" << endl;
-}
-void cari_teman(){
-    cout << "Mencari Teman" << endl;
-}
-void show_teman(){
-    cout << "Menampilkan Teman" << endl;
-}
+int main() {
+    SocialGraph graph;
 
-void setHubungan(nama a, nama b){
-    pertemanan[a][b] = berteman;
-    pertemanan[b][a] = berteman;
+    // Contoh penggunaan
+    graph.addStudent("Andi", {"Budi", "Citra"});
+    graph.addFriendship("Andi", "Dedi");
+    graph.addFriendship("Budi", "Edi");
+    graph.addFriendship("Citra", "Dedi");
+    // graph.removeStudent("Budi");
+    graph.displayFriends("Andi");
+    graph.displayFriends("Budi");
+    vector<string> mutualFriends = graph.findMutualFriends("Andi", "Citra");
+    cout << "Teman mutual Andi dan Citra: ";
+    for (const auto& friendName : mutualFriends) {
+        cout << friendName << " ";
+    }
+
+    return 0;
 }
